@@ -1,0 +1,135 @@
+{
+  "name": "Perlin Tests",
+  "tree": {
+    "$className": "DataModel",
+
+  "ReplicatedStorage": {
+    "Shared": {
+      "$path": "src/shared"
+    }
+  },
+
+  "ServerScriptService": {
+    "Server": {
+      "$path": "src/server",
+      "TerrainSystem": {
+        "$className": "Folder",
+        "ChunkManager": {
+          "$className": "Script",
+          "$path": "src/server/TerrainSystem/ChunkManager.server.lua"
+        },
+        "Manager": {
+          "$path": "src/server/TerrainSystem/Manager.lua"
+        },
+        "Aggregates": {
+          "$className": "Folder",
+          "Generation": {
+            "$path": "src/server/TerrainSystem/Aggregates/Generation.lua"
+          }
+        },
+        "Data": {
+          "$className": "Folder",
+            "BiomeList": {
+              "$path": "src/server/TerrainSystem/Data/BiomeList.lua"
+            },
+            "GenerationTypes": {
+              "$path": "src/server/TerrainSystem/Data/GenerationTypes.lua"
+            },
+            "GenerationVariables": {
+              "$path": "src/server/TerrainSystem/Data/GenerationVariables.lua"
+            },
+            "ResourceData": {
+              "$path": "src/server/TerrainSystem/Data/ResourceData.lua"
+            }
+        },
+        "Events": {
+          "$className": "Folder",
+          "ChunkSampled": {
+            "$className": "BindableEvent"
+          }
+        },
+        "Generation": {
+          "$className": "Folder",
+          "BiomeMap": {
+            "$path": "src/server/TerrainSystem/Generation/BiomeMap.lua"
+          },
+          "HeightMap": {
+            "$path": "src/server/TerrainSystem/Generation/HeightMap.lua"
+          },
+          "MyNoise2D": {
+            "$path": "src/server/TerrainSystem/Generation/MyNoise2D.lua"
+          }
+        },
+        "Rendering": {
+          "$className": "Folder",
+          "RendererScript": {
+            "$path": "src/server/TerrainSystem/Rendering/RendererScript.server.lua"
+          },
+          "VoxelModule": {
+            "$path": "src/server/TerrainSystem/Rendering/VoxelModule.lua"
+          }
+        },
+        "Sampling": {
+          "$className": "Folder",
+          "Helpers": {
+            "$path": "src/server/TerrainSystem/Sampling/Helpers.luau"
+          },
+          "SamplerModule": {
+            "$path": "src/server/TerrainSystem/Sampling/SamplerModule.lua"
+          },
+          "SamplerScript": {
+            "$path": "src/server/TerrainSystem/Sampling/SamplerScript.server.lua"
+          }
+        },
+        "Units": {
+          "$className": "Folder",
+          "Renderers": {
+            "$className": "Folder"
+          },
+          "Samplers": {
+            "$className": "Folder"
+          }
+        },
+        "Utils": {
+          "$className": "Folder",
+          "GenerationUtils": {
+          "$path": "src/server/TerrainSystem/Utils/GenerationUtils.lua"
+          }
+        }
+      }
+    }
+  },
+
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    },
+
+    "Workspace": {
+      "$properties": {
+        "FilteringEnabled": true
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Ambient": [
+          0,
+          0,
+          0
+        ],
+        "Brightness": 2,
+        "GlobalShadows": true,
+        "Outlines": false,
+        "Technology": "Voxel"
+      }
+    },
+    "SoundService": {
+      "$properties": {
+        "RespectFilteringEnabled": true
+      }
+    }
+  }
+}

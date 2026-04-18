@@ -34,7 +34,7 @@ function module.GetBiome(worldX: number, worldZ: number, BmOffset: types.Positio
 
 	if #level.LevelParameters == 1 then
 		local parameter = level.LevelParameters[1]
-		local noise = Noise.Fractal(bmOctaves, worldX + BmOffset.x, worldZ + BmOffset.z, bmPersistence, bmLacunarity, bmScale)
+		local noise = Noise.Fractal(bmOctaves, worldX + BmOffset.x, worldZ + BmOffset.z, bmPersistence, bmLacunarity, bmScale) * variables.BM_AMPLITUDE
 		local normalized = (noise + 1) * 15
 
 		local biomes = level.Biomes

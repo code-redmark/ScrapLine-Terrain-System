@@ -1,4 +1,4 @@
-local types = require(script.Parent.GenerationTypes)
+local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 
 local Resources = {} :: {Types: {[string] : types.EnvironmentResourceType}, Resources: {[string] : types.EnvironmentResource}}
 

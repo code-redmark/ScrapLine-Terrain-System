@@ -11,35 +11,34 @@
 
   "ServerScriptService": {
     "Server": {
-      "$path": "src/server",
+      "$className": "Folder",
       "TerrainSystem": {
         "$className": "Folder",
         "ChunkManager": {
-          "$className": "Script",
-          "$path": "src/server/TerrainSystem/ChunkManager.server.lua"
+          "$className": "Script"
         },
         "Manager": {
-          "$path": "src/server/TerrainSystem/Manager.lua"
+          "$path": "src/server/TerrainSystem/Manager.luau"
         },
         "Aggregates": {
           "$className": "Folder",
           "Generation": {
-            "$path": "src/server/TerrainSystem/Aggregates/Generation.lua"
+            "$path": "src/server/TerrainSystem/Aggregates/Generation.luau"
           }
         },
         "Data": {
           "$className": "Folder",
             "BiomeList": {
-              "$path": "src/server/TerrainSystem/Data/BiomeList.lua"
+              "$path": "src/server/TerrainSystem/Data/BiomeList.luau"
             },
             "GenerationTypes": {
-              "$path": "src/server/TerrainSystem/Data/GenerationTypes.lua"
+              "$path": "src/server/TerrainSystem/Data/GenerationTypes.luau"
             },
             "GenerationVariables": {
-              "$path": "src/server/TerrainSystem/Data/GenerationVariables.lua"
+              "$path": "src/server/TerrainSystem/Data/GenerationVariables.luau"
             },
             "ResourceData": {
-              "$path": "src/server/TerrainSystem/Data/ResourceData.lua"
+              "$path": "src/server/TerrainSystem/Data/ResourceData.luau"
             }
         },
         "Events": {
@@ -51,22 +50,25 @@
         "Generation": {
           "$className": "Folder",
           "BiomeMap": {
-            "$path": "src/server/TerrainSystem/Generation/BiomeMap.lua"
+            "$path": "src/server/TerrainSystem/Generation/BiomeMap.luau"
           },
           "HeightMap": {
-            "$path": "src/server/TerrainSystem/Generation/HeightMap.lua"
+            "$path": "src/server/TerrainSystem/Generation/HeightMap.luau"
           },
           "MyNoise2D": {
-            "$path": "src/server/TerrainSystem/Generation/MyNoise2D.lua"
+            "$path": "src/server/TerrainSystem/Generation/MyNoise2D.luau"
           }
         },
         "Rendering": {
           "$className": "Folder",
           "RendererScript": {
-            "$path": "src/server/TerrainSystem/Rendering/RendererScript.server.lua"
+            "$path": "src/server/TerrainSystem/Rendering/RendererScript.server.luau",
+            "$properties": {
+              "Enabled": false
+            }
           },
           "VoxelModule": {
-            "$path": "src/server/TerrainSystem/Rendering/VoxelModule.lua"
+            "$path": "src/server/TerrainSystem/Rendering/VoxelModule.luau"
           }
         },
         "Sampling": {
@@ -75,10 +77,13 @@
             "$path": "src/server/TerrainSystem/Sampling/Helpers.luau"
           },
           "SamplerModule": {
-            "$path": "src/server/TerrainSystem/Sampling/SamplerModule.lua"
+            "$path": "src/server/TerrainSystem/Sampling/SamplerModule.luau"
           },
           "SamplerScript": {
-            "$path": "src/server/TerrainSystem/Sampling/SamplerScript.server.lua"
+            "$path": "src/server/TerrainSystem/Sampling/SamplerScript.server.luau",
+            "$properties": {
+              "Enabled": false
+            }
           }
         },
         "Units": {
@@ -90,10 +95,16 @@
             "$className": "Folder"
           }
         },
+        "State": {
+          "$className": "Folder",
+          "StateModule": { 
+          "$path": "src/server/TerrainSystem/State/StateModule.luau"
+          }
+        },
         "Utils": {
           "$className": "Folder",
           "GenerationUtils": {
-          "$path": "src/server/TerrainSystem/Utils/GenerationUtils.lua"
+          "$path": "src/server/TerrainSystem/Utils/GenerationUtils.luau"
           }
         }
       }

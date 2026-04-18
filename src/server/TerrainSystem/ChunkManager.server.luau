@@ -9,13 +9,20 @@ local ManagerEvents = script.Parent.Events
 
 local Request = game.ReplicatedStorage.Events.RequestChunk
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
+local state = require(game.ServerScriptService.Server.TerrainSystem.State.StateModule)
 
 Request.OnServerEvent:Connect(function(player, ChunkPos: types.Position2D)
-	ManagerModule.OnChunkRequest(ChunkPos)
+	table.insert(state.ActiveChunks, ChunkPos)
+	local latest = state.LatestRequests[player.Name]
+	if latest == ChunkPos then 
+		return 
+	else
+		state.LatestRequest[player.Name] = ChunkPos
+		ManagerModule.OnChunkRequest(ChunkPos)
+	end	 
 end)
 
 ManagerEvents.ChunkSampled.Event:Connect(function(ChunkPos, TerrainMap, EnvironmentMap)  
-	-- Terrainmaps good here
 	ManagerModule.OnChunkSampled(ChunkPos, TerrainMap, EnvironmentMap) 
 end)
 

@@ -1,6 +1,6 @@
 local SS = game:GetService("ServerStorage")
 
-local types = require(script.Parent.GenerationTypes)
+local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 local ResourceData = require(script.Parent.ResourceData)
 
 local List: {types.BiomeLevel} = {}
@@ -37,7 +37,7 @@ local List: {types.BiomeLevel} = {}
 		[2] = {
 			Name = "Plains",
 			SurfacePart = SS.Generation.Terrain.BiomeParts.PlainsPart,
-			Temperature = 10,
+			Temperature = 5, -- we give some bias to plains
 			BiomeResources = {
 				[1] = {Resource = ResourceData.Resources.Wood, Weight = 10},
 				[2] = {Resource = ResourceData.Resources.Fiber, Weight = 8},
@@ -49,7 +49,7 @@ local List: {types.BiomeLevel} = {}
 		[3] = {
 			Name = "Desert",
 			SurfacePart = SS.Generation.Terrain.BiomeParts.DesertPart,
-			Temperature = 20,
+			Temperature = 25,
 			BiomeResources = {
 				[1] = {Resource = ResourceData.Resources.Copper, Weight = 10},
 				[2] = {Resource = ResourceData.Resources.Stone, Weight = 6},

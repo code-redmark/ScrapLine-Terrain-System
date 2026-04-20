@@ -9,3 +9,7 @@ end)
 actor:BindToMessageParallel('RenderChunkEnvironment', function(ChunkPosition, EnvironmentMap) 
 	Voxel.RenderChunkEnvironment(ChunkPosition, EnvironmentMap)
 end)
+
+actor:BindToMessage('UnloadChunk', function(ChunkPosition)
+	Voxel.UnloadChunk(ChunkPosition)
+end)

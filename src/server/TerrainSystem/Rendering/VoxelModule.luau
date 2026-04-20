@@ -27,7 +27,7 @@ function Voxel.RenderChunkTerrain(ChunkPosition: types.Position2D, TerrainMap: {
 	local baseZ = ChunkPosition.z * sizeStuds
 
 	-- IMPORTANT: Y size must be consistent with terrain limits
-	local heightStuds = variables.HM_AMPLITUDE * 3 + 1
+	local heightStuds = variables.ChunkHeight
 
 	local region = Region3.new(
 		Vector3.new(baseX, 0, baseZ),
@@ -107,5 +107,14 @@ function Voxel.RenderChunkArea(ChunkPosition: types.Position2D, areaIndex: numbe
 
 end
 
+function Voxel.UnloadChunk(ChunkPos: types.Position2D)
+
+    local region = Region3.new(
+        Vector3.new(ChunkPos.x * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE, 0, ChunkPos.z * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE),
+        Vector3.new((ChunkPos.x + 1) * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE, variables.ChunkHeight, (ChunkPos.z + 1) * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE)
+    )
+    workspace.Terrain:FillRegion(region, 4, Enum.Material.Air)
+	print('unloaded')
+end
 
 return Voxel

@@ -1,35 +1,8 @@
 local variables = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
+local state = require(game.ServerScriptService.Server.TerrainSystem.State.StateModule)
 
 local CM = {}
-
--- Random Stuff
-----------------
-local HeightMapGenerator = Random.new()
-local BiomeMapGenerator = Random.new()
-
-local ResourceMapGenerator = Random.new()
-
-local TerrainOffset = {
-	HeightMap = {
-		x = HeightMapGenerator:NextNumber(-10000, 10000),
-		z = HeightMapGenerator:NextNumber(-10000, 10000)
-	},
-	BiomeMap = {
-		x = BiomeMapGenerator:NextNumber(-10000, 10000),
-		z = BiomeMapGenerator:NextNumber(-10000, 10000)
-	}
-}
-
-local EnvironmentOffset = {
-	ResourceMap = {
-		x = ResourceMapGenerator:NextNumber(-10000, 10000),
-		z = ResourceMapGenerator:NextNumber(-10000, 10000)
-	}
-}
-
-
-----------------
 
 local Samplers: {Actor} = {}
 local currentSampler = 0
@@ -71,14 +44,43 @@ local function nextRenderer()
 	return Renderers[currentRenderer]
 end
 
-function CM.OnChunkRequest(ChunkPosition: types.Position2D)
-	nextSampler():SendMessage('SampleChunk', ChunkPosition, TerrainOffset, EnvironmentOffset)
+function CM.SampleChunk(RequestChunkPos: types.Position2D, TerrainOffset, EnvironmentOffset)
+	for xOffset = -1, 1 do
+		for zOffset = -1, 1 do
+			local chunkX = RequestChunkPos.x + xOffset
+			local chunkZ = RequestChunkPos.z + zOffset
+			-- TODO: check if chunk is already loaded first
+			nextSampler():SendMessage('SampleChunk', {x = chunkX, z = chunkZ}, TerrainOffset, EnvironmentOffset)
+		end
+	end
 end
 
-function CM.OnChunkSampled(ChunkPosition: types.Position2D, TerrainMap: {types.TerrainSample}, EnvironmentMap: {types.EnvironmentSample})
+function CM.RenderChunk(ChunkPosition: types.Position2D, TerrainMap: {types.TerrainSample}, EnvironmentMap: {types.EnvironmentSample})
 	nextRenderer():SendMessage('RenderChunkTerrain', ChunkPosition, TerrainMap)
 	nextRenderer():SendMessage('RenderChunkEnvironment', ChunkPosition, EnvironmentMap)
 end
+
+--[[
+	Goes through the given chunk and its 8 adjacent chunks, for
+	each inactive chunk the chunk is unloaded
+]]--
+function CM.UnloadInactive(ChunkPosition: types.Position2D)
+	for xOffset = -1, 1 do
+		for zOffset = -1, 1 do
+			local aroundX = ChunkPosition.x + xOffset
+			local aroundZ = ChunkPosition.z + zOffset
+
+			if state.isChunkActive(aroundX, aroundZ) == nil then  
+				print('Unloading chunk at '..aroundX..', '..aroundZ)
+				nextSampler():SendMessage('UnloadChunk', ChunkPosition)
+			else
+				print(state.ActiveChunks)
+			end
+		end
+	end
+end
+
+
 
 
 return CM

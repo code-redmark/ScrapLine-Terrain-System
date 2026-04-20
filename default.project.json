@@ -15,7 +15,7 @@
       "TerrainSystem": {
         "$className": "Folder",
         "ChunkManager": {
-          "$className": "Script"
+          "$path": "src/server/TerrainSystem/ChunkManager.server.luau"
         },
         "Manager": {
           "$path": "src/server/TerrainSystem/Manager.luau"

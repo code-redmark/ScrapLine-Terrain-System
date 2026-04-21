@@ -82,15 +82,11 @@ function Voxel.RenderChunkTerrain(ChunkPosition: types.Position2D, TerrainMap: {
 			else processed += 1 end
 		end
 	end
-	--local t1 = os.clock()
-	--print("[Timing] RenderChunkTerrain: Built arrays in", t1 - t0, "seconds")
+	
 
 	task.synchronize()
 
-	--local t2 = os.clock()
 	EngineTerrain:WriteVoxels(region:ExpandToGrid(resolution), resolution, materials, occupancy)
-	--local t3 = os.clock()
-	--print("[Timing] RenderChunkTerrain: WriteVoxels took", t3 - t2, "seconds")
 
 	task.desynchronize()
 end
@@ -115,7 +111,6 @@ function Voxel.UnloadChunk(ChunkPos: types.Position2D)
         Vector3.new((ChunkPos.x + 1) * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE, variables.ChunkHeight, (ChunkPos.z + 1) * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE)
     )
 	workspace.Terrain:FillRegion(region:ExpandToGrid(4), 4, Enum.Material.Air)
-	print('unloaded')
 end
 
 return Voxel

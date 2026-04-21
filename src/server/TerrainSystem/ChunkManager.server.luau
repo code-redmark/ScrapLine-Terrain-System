@@ -41,8 +41,6 @@ Request.OnServerEvent:Connect(function(player, ChunkPos: types.Position2D)
         end
     end
 
-    print('new set')
-
     -- Build old 3x3 set (if any)
     local oldSet = {}
     if latest then
@@ -66,7 +64,6 @@ Request.OnServerEvent:Connect(function(player, ChunkPos: types.Position2D)
     end
 
     if needSample then
-        print('need sample')
         ManagerModule.SampleChunk(ChunkPos, TerrainOffset, EnvironmentOffset)
     end
 
@@ -83,7 +80,6 @@ Request.OnServerEvent:Connect(function(player, ChunkPos: types.Position2D)
     end
 
     state.LatestRequests[userId] = {x = ChunkPos.x, z = ChunkPos.z}
-    print('processed request')
 end)
 
 ManagerEvents.ChunkSampled.Event:Connect(function(ChunkPos, TerrainMap, EnvironmentMap)

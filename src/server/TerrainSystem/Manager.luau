@@ -43,17 +43,30 @@ local function nextRenderer()
 end
 
 function CM.SampleChunk(RequestChunkPos: types.Position2D, TerrainOffset, EnvironmentOffset)
-	for xOffset = -1, 1 do
-		for zOffset = -1, 1 do
-			local chunkX = RequestChunkPos.x + xOffset
-			local chunkZ = RequestChunkPos.z + zOffset
-			-- Skip if chunk is already loaded or currently being sampled
-			if not state.isChunkLoaded(chunkX, chunkZ) and not state.isChunkSampling(chunkX, chunkZ) then
-				print('sampling chunk at '..chunkX..', '..chunkZ)
-				state.markChunkSampling(chunkX, chunkZ)
-				nextSampler():SendMessage('SampleChunk', {x = chunkX, z = chunkZ}, TerrainOffset, EnvironmentOffset)
-			end
+
+
+	-- Priority order: center first, then orthogonals, then diagonals
+	local offsets = {
+		{0,0},
+		{-1,0},{1,0},{0,-1},{0,1},
+		{-1,-1},{1,-1},{-1,1},{1,1}
+	}
+
+	local targets = {}
+	for _, off in ipairs(offsets) do
+		local chunkX = RequestChunkPos.x + off[1]
+		local chunkZ = RequestChunkPos.z + off[2]
+		if not state.isChunkLoaded(chunkX, chunkZ) and not state.isChunkSampling(chunkX, chunkZ) then
+			state.markChunkSampling(chunkX, chunkZ)
+			table.insert(targets, {x = chunkX, z = chunkZ})
 		end
+	end
+
+	if #targets == 0 then return end
+
+	-- Dispatch prioritized samples immediately
+	for _, coords in ipairs(targets) do
+		nextSampler():SendMessage('SampleChunk', coords, TerrainOffset, EnvironmentOffset)
 	end
 end
 
@@ -73,7 +86,6 @@ function CM.UnloadInactive(ChunkPosition: types.Position2D)
 			local aroundZ = ChunkPosition.z + zOffset
 
 			if not state.isChunkActive(aroundX, aroundZ) then
-				print('Unloading chunk at '..aroundX..', '..aroundZ)
 				-- clear authoritative loaded/sampling flags before instructing renderer to clear terrain
 				state.unmarkChunkLoaded(aroundX, aroundZ)
 				state.unmarkChunkSampling(aroundX, aroundZ)

@@ -23,27 +23,65 @@ end
 
 --[[
     Returns the list of players currently keeping
-    the chunk active
+    the chunk active (or nil if none)
 ]]--
 function state.getChunk(x, z)
     return state.ActiveChunks[chunkKey(x, z)]
 end 
 
-function state.addPlrActiveChunk(x, z, playerName)
-    local chunkKey = chunkKey(x, z)
-    if state.ActiveChunks[chunkKey] then
-        state.ActiveChunks[chunkKey][playerName] = true
+-- Add a player to the chunk's active set. `playerId` should be a number (UserId).
+function state.addPlrActiveChunk(x, z, playerId)
+    local k = chunkKey(x, z)
+    local chunk = state.ActiveChunks[k]
+    if chunk then
+        chunk[playerId] = true
     else
-        state.ActiveChunks[chunkKey] = {[playerName] = true}
+        state.ActiveChunks[k] = {[playerId] = true}
     end
 end
 
-function state.removePlrFromChunk(x, z, playerName)
-    state.ActiveChunks[chunkKey(x, z)][playerName] = nil
+-- Remove a player from a chunk. If the chunk has no players afterwards, remove its entry.
+function state.removePlrFromChunk(x, z, playerId)
+    local k = chunkKey(x, z)
+    local chunk = state.ActiveChunks[k]
+    if not chunk then return end
+    chunk[playerId] = nil
+    if next(chunk) == nil then
+        state.ActiveChunks[k] = nil
+    end
 end
 
+-- True if at least one player currently keeps the chunk active.
 function state.isChunkActive(x, z)
-    return state.ActiveChunks[chunkKey(x, z)]
+    return state.ActiveChunks[chunkKey(x, z)] ~= nil
+end
+
+-- --- Loaded / sampling tracking ---
+state.LoadedChunks = {}
+state.SamplingChunks = {}
+
+function state.markChunkLoaded(x, z)
+    state.LoadedChunks[chunkKey(x, z)] = true
+end
+
+function state.unmarkChunkLoaded(x, z)
+    state.LoadedChunks[chunkKey(x, z)] = nil
+end
+
+function state.isChunkLoaded(x, z)
+    return state.LoadedChunks[chunkKey(x, z)] == true
+end
+
+function state.markChunkSampling(x, z)
+    state.SamplingChunks[chunkKey(x, z)] = true
+end
+
+function state.unmarkChunkSampling(x, z)
+    state.SamplingChunks[chunkKey(x, z)] = nil
+end
+
+function state.isChunkSampling(x, z)
+    return state.SamplingChunks[chunkKey(x, z)] == true
 end
 
 state.ActiveChunks = {}

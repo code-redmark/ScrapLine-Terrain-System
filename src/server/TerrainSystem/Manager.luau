@@ -32,8 +32,6 @@ for i = 1, variables.GENERATION_RENDERERS do
 	table.insert(Renderers, actor)
 end
 
-print('r: '..#Renderers..' s: '..#Samplers)
-
 local function nextSampler()
 	currentSampler = (currentSampler % #Samplers) + 1
 	return Samplers[currentSampler]
@@ -49,8 +47,12 @@ function CM.SampleChunk(RequestChunkPos: types.Position2D, TerrainOffset, Enviro
 		for zOffset = -1, 1 do
 			local chunkX = RequestChunkPos.x + xOffset
 			local chunkZ = RequestChunkPos.z + zOffset
-			-- TODO: check if chunk is already loaded first
-			nextSampler():SendMessage('SampleChunk', {x = chunkX, z = chunkZ}, TerrainOffset, EnvironmentOffset)
+			-- Skip if chunk is already loaded or currently being sampled
+			if not state.isChunkLoaded(chunkX, chunkZ) and not state.isChunkSampling(chunkX, chunkZ) then
+				print('sampling chunk at '..chunkX..', '..chunkZ)
+				state.markChunkSampling(chunkX, chunkZ)
+				nextSampler():SendMessage('SampleChunk', {x = chunkX, z = chunkZ}, TerrainOffset, EnvironmentOffset)
+			end
 		end
 	end
 end
@@ -70,11 +72,12 @@ function CM.UnloadInactive(ChunkPosition: types.Position2D)
 			local aroundX = ChunkPosition.x + xOffset
 			local aroundZ = ChunkPosition.z + zOffset
 
-			if state.isChunkActive(aroundX, aroundZ) == nil then  
+			if not state.isChunkActive(aroundX, aroundZ) then
 				print('Unloading chunk at '..aroundX..', '..aroundZ)
-				nextSampler():SendMessage('UnloadChunk', ChunkPosition)
-			else
-				print(state.ActiveChunks)
+				-- clear authoritative loaded/sampling flags before instructing renderer to clear terrain
+				state.unmarkChunkLoaded(aroundX, aroundZ)
+				state.unmarkChunkSampling(aroundX, aroundZ)
+				nextRenderer():SendMessage('UnloadChunk', {x = aroundX, z = aroundZ})
 			end
 		end
 	end

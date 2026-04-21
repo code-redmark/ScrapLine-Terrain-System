@@ -1,5 +1,6 @@
 
 local variables = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
+
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 
 local EngineTerrain = game.Workspace:FindFirstChildOfClass('Terrain')
@@ -113,7 +114,7 @@ function Voxel.UnloadChunk(ChunkPos: types.Position2D)
         Vector3.new(ChunkPos.x * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE, 0, ChunkPos.z * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE),
         Vector3.new((ChunkPos.x + 1) * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE, variables.ChunkHeight, (ChunkPos.z + 1) * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE)
     )
-    workspace.Terrain:FillRegion(region, 4, Enum.Material.Air)
+	workspace.Terrain:FillRegion(region:ExpandToGrid(4), 4, Enum.Material.Air)
 	print('unloaded')
 end
 

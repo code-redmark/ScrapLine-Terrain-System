@@ -1,5 +1,13 @@
 
 local variables = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
+local sharedVars = require(game.ReplicatedStorage.Shared.SharedVariables)
+
+local CellsPerChunkSide
+if sharedVars.PRELOADED then
+	CellsPerChunkSide = sharedVars.PRELOAD_CELLS_PER_CHUNKSIDE
+else
+	CellsPerChunkSide = sharedVars.CELLS_PER_CHUNKSIDE
+end
 
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 
@@ -19,9 +27,9 @@ function Voxel.RenderChunkTerrain(ChunkPosition: types.Position2D, TerrainMap: {
 	local processed = 0
 	
 	local resolution = 4
-	local CELLSize = variables.CELL_SIZE
+	local CELLSize = sharedVars.CELL_SIZE
 
-	local size = variables.CELLS_PER_CHUNKSIDE
+	local size = CellsPerChunkSide
 	local sizeStuds = size * CELLSize
 
 	local baseX = ChunkPosition.x * sizeStuds
@@ -107,8 +115,8 @@ end
 function Voxel.UnloadChunk(ChunkPos: types.Position2D)
 
     local region = Region3.new(
-        Vector3.new(ChunkPos.x * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE, 0, ChunkPos.z * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE),
-        Vector3.new((ChunkPos.x + 1) * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE, variables.ChunkHeight, (ChunkPos.z + 1) * variables.CELL_SIZE  * variables.CELLS_PER_CHUNKSIDE)
+        Vector3.new(ChunkPos.x * sharedVars.CELL_SIZE  * CellsPerChunkSide, 0, ChunkPos.z * sharedVars.CELL_SIZE  * CellsPerChunkSide),
+        Vector3.new((ChunkPos.x + 1) * sharedVars.CELL_SIZE  * CellsPerChunkSide, variables.ChunkHeight, (ChunkPos.z + 1) * sharedVars.CELL_SIZE  * CellsPerChunkSide)
     )
 	workspace.Terrain:FillRegion(region:ExpandToGrid(4), 4, Enum.Material.Air)
 end

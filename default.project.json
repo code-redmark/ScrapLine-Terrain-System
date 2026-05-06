@@ -20,6 +20,9 @@
         "Manager": {
           "$path": "src/server/TerrainSystem/Manager.luau"
         },
+        "Preloader": {
+          "$path": "src/server/TerrainSystem/Preloader.server.luau"
+        },
         "Aggregates": {
           "$className": "Folder",
           "Generation": {
@@ -114,8 +117,15 @@
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "Client": {
-          "$path": "src/client"
+          "$className": "Folder",
+          "TerrainSystem": {
+          "$className": "Folder",
+          "RequestTerrain": {
+            "$path": "src/client/TerrainSystem/RequestTerrain.client.luau"
+            }
+          }
         }
+        
       }
     },
 

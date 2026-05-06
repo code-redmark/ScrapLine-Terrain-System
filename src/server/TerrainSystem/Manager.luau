@@ -44,6 +44,7 @@ end
 
 function CM.SampleChunk(RequestChunkPos: types.Position2D, TerrainOffset, EnvironmentOffset)
 
+	if TerrainOffset == nil or EnvironmentOffset == nil then warn('u forgot to pass offset bro') end
 
 	-- Priority order: center first, then orthogonals, then diagonals
 	local offsets = {
@@ -64,10 +65,13 @@ function CM.SampleChunk(RequestChunkPos: types.Position2D, TerrainOffset, Enviro
 
 	if #targets == 0 then return end
 
+
 	-- Dispatch prioritized samples immediately
 	for _, coords in ipairs(targets) do
 		nextSampler():SendMessage('SampleChunk', coords, TerrainOffset, EnvironmentOffset)
 	end
+
+	
 end
 
 function CM.RenderChunk(ChunkPosition: types.Position2D, TerrainMap: {types.TerrainSample}, EnvironmentMap: {types.EnvironmentSample})

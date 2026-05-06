@@ -1,9 +1,11 @@
 local variables = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
+local sharedVars = require(game.ReplicatedStorage.Shared.SharedVariables)
+
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 local Noise = require(game.ServerScriptService.Server.TerrainSystem.Generation.MyNoise2D)
 local BiomeList = require(game.ServerScriptService.Server.TerrainSystem.Data.BiomeList)
 
-local chunkWorldSpan = variables.CELL_SIZE * variables.CELLS_PER_CHUNKSIDE
+local chunkWorldSpan = sharedVars.CELL_SIZE * sharedVars.CELLS_PER_CHUNKSIDE
 local bmOctaves = variables.BM_OCTAVES
 local bmPersistence = variables.BM_PERSISTENCE
 local bmLacunarity = variables.BM_LACUNARITY

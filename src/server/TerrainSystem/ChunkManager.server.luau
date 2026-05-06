@@ -1,10 +1,14 @@
+local sharedVars = require(game.ReplicatedStorage.Shared.SharedVariables)
+if sharedVars.PRELOADED and sharedVars.INFINITE_WORLD == false then return end
+
 local ManagerModule = require(game.ServerScriptService.Server.TerrainSystem.Manager)
 local ManagerEvents = script.Parent.Events
 
-local Request = game.ReplicatedStorage.Events.RequestChunk
+local ClientRequest = game.ReplicatedStorage.Events.RequestChunk
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 local state = require(game.ServerScriptService.Server.TerrainSystem.State.StateModule)
 local variables = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
+
 
 local HmGen = Random.new(variables.HEIGHT_MAP_SEED)
 local BmGen = Random.new(variables.BIOME_MAP_SEED)
@@ -19,8 +23,11 @@ local EnvironmentOffset = {
     ResourceMap = {x = RmGen:NextInteger(0, 100000), z = RmGen:NextInteger(0, 100000)},
 }
 
+ClientRequest.OnServerEvent:Connect(function(player, ChunkPos: types.Position2D)
 
-Request.OnServerEvent:Connect(function(player, ChunkPos: types.Position2D)
+    if sharedVars.PRELOADED and (math.abs(ChunkPos.x) < sharedVars.PRELOAD_RADIUS 
+        and math.abs(ChunkPos.z) < sharedVars.PRELOAD_RADIUS) then return end
+            
     local userId = player.UserId
     local latest = state.LatestRequests[userId]
 
@@ -56,7 +63,6 @@ Request.OnServerEvent:Connect(function(player, ChunkPos: types.Position2D)
     -- Add player to newly needed chunks; detect if any chunk needs sampling
     local needSample = false
     for k, coords in pairs(newSet) do
-        -- add (idempotent)
         state.addPlrActiveChunk(coords.x, coords.z, userId)
         if not state.isChunkLoaded(coords.x, coords.z) and not state.isChunkSampling(coords.x, coords.z) then
             needSample = true
@@ -92,3 +98,6 @@ ManagerEvents.ChunkSampled.Event:Connect(function(ChunkPos, TerrainMap, Environm
         -- Chunk became inactive while sampling; skip rendering.
     end
 end)
+
+
+

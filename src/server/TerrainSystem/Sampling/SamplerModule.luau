@@ -1,5 +1,7 @@
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 local variables = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
+local sharedVars = require(game.ReplicatedStorage.Shared.SharedVariables)
+
 
 local Generation = require(game.ServerScriptService.Server.TerrainSystem.Aggregates.Generation)
 
@@ -9,8 +11,15 @@ local CS = {}
 
 CS.AliasMap = Helpers.PrecomputeBiomeAliasMap()
 
-local cellsPerChunkSide = variables.CELLS_PER_CHUNKSIDE
-local cellSize = variables.CELL_SIZE
+local cellsPerChunkSide
+
+if sharedVars.PRELOADED then
+	cellsPerChunkSide = sharedVars.PRELOAD_CELLS_PER_CHUNKSIDE
+else
+	cellsPerChunkSide = sharedVars.CELLS_PER_CHUNKSIDE
+end
+
+local cellSize = sharedVars.CELL_SIZE
 local cellsPerMacroAreaSide = variables.CELLS_PER_MACROAREA_SIDE
 local macroAreasPerChunkSide = variables.MACROAREAS_PER_CHUNKSIDE
 local chunkStudSpan = cellSize * cellsPerChunkSide

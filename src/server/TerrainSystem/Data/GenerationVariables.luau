@@ -14,11 +14,6 @@ vars.HEIGHT_MAP_SEED = nil
 vars.BIOME_MAP_SEED = nil
 vars.RESOURCE_MAP_SEED = nil
 
--- Chunk System variable, represents studs
-vars.CELLS_PER_CHUNKSIDE = sharedVars.CELLS_PER_CHUNKSIDE
-vars.CELL_SIZE = sharedVars.CELL_SIZE
-
-
 vars.VOXEL_RESOLUTION = 4 -- DONT CHANGE, THIS IS STRICT FOR THE ROBLOX TERRAIN ENGINE
 
 vars.HM_SCALE = 50
@@ -44,7 +39,6 @@ vars.ChunkHeight = vars.HM_AMPLITUDE * 3 + 1
 
 -- Calculations and precomputing
 
-vars.CELLS_PER_MACROAREA_SIDE = vars.CELLS_PER_CHUNKSIDE / vars.MACROAREAS_PER_CHUNKSIDE
-
+vars.CELLS_PER_MACROAREA_SIDE = sharedVars.CELLS_PER_CHUNKSIDE / vars.MACROAREAS_PER_CHUNKSIDE
 
 return vars

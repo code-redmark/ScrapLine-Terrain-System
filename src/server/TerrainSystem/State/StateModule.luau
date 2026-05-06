@@ -1,21 +1,9 @@
 --local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 
-local state = {} -- :: {
+local state = {}
     
---     -- --[[
---     --     ActiveChunks represents the chunks currently containing
---     --     atleast ONE player, all the 8 chunks adjacent to this
---     --     are loaded in full detail
---     -- ]]--
---     -- ActiveChunks: [string] : {string},
 
---     -- --[[
---     --     LatestRequest contains each player's latest
---     --     request's chunk position stored in a 2D array, this is saved so that
---     --     if new requests come from the same chunk they are ignored
---     -- ]]--
---     -- LatestRequests: {[number]: types.Position2D }
--- }
+
 
 local function chunkKey(x, z)
     return x..', '..z
@@ -84,7 +72,19 @@ function state.isChunkSampling(x, z)
     return state.SamplingChunks[chunkKey(x, z)] == true
 end
 
+
+ --[[
+     ActiveChunks represent all the chunks being activated by a player,
+     a player activates a chunk by being at atleast one chunk of distance from
+     the chunk
+ ]]--
 state.ActiveChunks = {}
+
+ --[[
+     LatestRequest contains each player's latest
+     request's chunk position stored in a 2D array, this is saved so that
+     if new requests come from the same chunk they are ignored
+ ]]--
 state.LatestRequests = {}
 
 

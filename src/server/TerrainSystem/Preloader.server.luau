@@ -1,5 +1,9 @@
-local vars = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
+
 local sharedVars = require(game.ReplicatedStorage.Shared.SharedVariables)
+
+if sharedVars.PRELOADED == false then return end
+
+local vars = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
 local state = require(game.ServerScriptService.Server.TerrainSystem.State.StateModule)
 local ManagerModule = require(game.ServerScriptService.Server.TerrainSystem.Manager)
 local ManagerEvents = game.ServerScriptService.Server.TerrainSystem.Events

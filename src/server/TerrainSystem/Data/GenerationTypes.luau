@@ -11,7 +11,7 @@ export type Position2D = {
 
 export type Biome = {
 	Name: string,
-	SurfacePart: Part,
+	Material: Enum.Material,
 	BiomeResources: {[number] : {Resource: EnvironmentResource, Weight: number}}
 }
 

@@ -22,7 +22,7 @@ local Resources = {} :: {Types: {[string] : types.EnvironmentResourceType}, Reso
 			Color = Color3.fromHSV(0.25, 1, 0.67),
 			TypeColorOverride = false,
 			ColorTerrainMix = false,
-			TerrainMaterial = nil,
+			TerrainMaterial = Enum.Material.Grass,
 			TerrainTexture = nil
 		},
 		Fiber = {
@@ -33,7 +33,7 @@ local Resources = {} :: {Types: {[string] : types.EnvironmentResourceType}, Reso
 			Color = Color3.fromHSV(0.166667, 1, 0.670588),
 			TypeColorOverride = false,
 			ColorTerrainMix = false,
-			TerrainMaterial = nil,
+			TerrainMaterial = Enum.Material.Fabric,
 			TerrainTexture = nil
 		},
 		Stone = {
@@ -44,7 +44,7 @@ local Resources = {} :: {Types: {[string] : types.EnvironmentResourceType}, Reso
 			Color = Color3.fromHSV(0.5, 0.03, 0.3),
 			TypeColorOverride = false,
 			ColorTerrainMix = false,
-			TerrainMaterial = nil,
+			TerrainMaterial = Enum.Material.Rock,
 			TerrainTexture = nil
 		},
 		Iron = {
@@ -55,7 +55,7 @@ local Resources = {} :: {Types: {[string] : types.EnvironmentResourceType}, Reso
 			Color = Color3.fromHSV(0.253972, 0.0985885, 0.835294),
 			TypeColorOverride = false,
 			ColorTerrainMix = false,
-			TerrainMaterial = nil,
+			TerrainMaterial = Enum.Material.Rock,
 			TerrainTexture = nil
 		},
 		Copper = {
@@ -66,7 +66,7 @@ local Resources = {} :: {Types: {[string] : types.EnvironmentResourceType}, Reso
 			Color = Color3.fromHSV(0.1, 0.8, 0.6),
 			TypeColorOverride = false,
 			ColorTerrainMix = false,
-			TerrainMaterial = nil,
+			TerrainMaterial = Enum.Material.Rock,
 			TerrainTexture = nil
 		}
 	}

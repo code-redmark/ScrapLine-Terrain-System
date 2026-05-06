@@ -123,7 +123,7 @@ function CS.SampleChunkEnvironment(AreaFrequencyMap: {[number]: types.BiomeFrequ
 	local batchSize = variables.E_SAMPLE_BATCH_SIZE
 	local processed = 0
 
-	local ResourceMap: {[number]: types.EnvironmentSample} = {}
+	local EnvironmentMap: {[number]: types.EnvironmentSample} = {}
 
 	for key, area in pairs(AreaFrequencyMap) do
 
@@ -157,11 +157,11 @@ function CS.SampleChunkEnvironment(AreaFrequencyMap: {[number]: types.BiomeFrequ
 			z = areaZ + EnvironmentOffset.ResourceMap.z
 		}
 
-		local noise = (math.noise(OffsetChunk.x, OffsetChunk.z) + 1) / 2
+		local noise = ((math.noise(OffsetChunk.x, OffsetChunk.z) + 1) / 2) / variables.RM_SCALE * variables.RM_AMPLITUDE
 
 		local mapKey = key
 
-		if noise >= 0.5 then -- ~50% of macro areas will have a resource
+		if noise >= 0.3 then
 
 			-- 1. Pick resource with biome bias
 			local Resource: types.EnvironmentResource = Helpers.PickResource(areaBiome.Name, areaBiome.BiomeResources, CS.AliasMap)
@@ -180,7 +180,7 @@ function CS.SampleChunkEnvironment(AreaFrequencyMap: {[number]: types.BiomeFrequ
 			}
 
 
-			ResourceMap[mapKey] = sample
+			EnvironmentMap[mapKey] = sample
 
 			if processed >= batchSize then
 				task.wait()
@@ -192,7 +192,7 @@ function CS.SampleChunkEnvironment(AreaFrequencyMap: {[number]: types.BiomeFrequ
 		end
 	end
 
-	return ResourceMap
+	return EnvironmentMap
 end
 
 

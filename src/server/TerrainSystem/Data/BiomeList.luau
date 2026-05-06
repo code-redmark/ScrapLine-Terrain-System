@@ -24,7 +24,7 @@ local List: {types.BiomeLevel} = {}
 	Biomes = {
 		[1] = {
 			Name = "Snow",
-			SurfacePart = SS.Generation.Terrain.BiomeParts.SnowPart,
+			Material = Enum.Material.Snow,
 			Temperature = 0,
 			BiomeResources = {
 				[1] = {Resource = ResourceData.Resources.Iron, Weight = 10},
@@ -36,7 +36,7 @@ local List: {types.BiomeLevel} = {}
 
 		[2] = {
 			Name = "Plains",
-			SurfacePart = SS.Generation.Terrain.BiomeParts.PlainsPart,
+			Material = Enum.Material.Grass,
 			Temperature = 5, -- we give some bias to plains
 			BiomeResources = {
 				[1] = {Resource = ResourceData.Resources.Wood, Weight = 10},
@@ -48,7 +48,7 @@ local List: {types.BiomeLevel} = {}
 
 		[3] = {
 			Name = "Desert",
-			SurfacePart = SS.Generation.Terrain.BiomeParts.DesertPart,
+			Material = Enum.Material.Sand,
 			Temperature = 25,
 			BiomeResources = {
 				[1] = {Resource = ResourceData.Resources.Copper, Weight = 10},

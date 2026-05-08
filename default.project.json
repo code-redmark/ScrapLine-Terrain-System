@@ -23,12 +23,6 @@
         "Preloader": {
           "$path": "src/server/TerrainSystem/Preloader.server.luau"
         },
-        "Aggregates": {
-          "$className": "Folder",
-          "Generation": {
-            "$path": "src/server/TerrainSystem/Aggregates/Generation.luau"
-          }
-        },
         "Data": {
           "$className": "Folder",
             "BiomeList": {

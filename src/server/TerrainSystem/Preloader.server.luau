@@ -40,4 +40,4 @@ end
 
 local start = os.clock()
 PreloadWorld()
-print("Took "..start - os.clock())
+print("preloading took "..start - os.clock())

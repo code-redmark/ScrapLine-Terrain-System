@@ -1,7 +1,6 @@
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
-local variables = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
+local vars = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationVariables)
 local sharedVars = require(game.ReplicatedStorage.Shared.SharedVariables)
-
 
 local Generation = require(game.ServerScriptService.Server.TerrainSystem.Aggregates.Generation)
 
@@ -11,26 +10,12 @@ local CS = {}
 
 CS.AliasMap = Helpers.PrecomputeBiomeAliasMap()
 
-local cellsPerChunkSide
-
-if sharedVars.PRELOADED then
-	cellsPerChunkSide = sharedVars.PRELOAD_CELLS_PER_CHUNKSIDE
-else
-	cellsPerChunkSide = sharedVars.CELLS_PER_CHUNKSIDE
-end
-
+local cellsPerChunkSide = vars.cellsPerChunkSide
 local cellSize = sharedVars.CELL_SIZE
-local cellsPerMacroAreaSide = variables.CELLS_PER_MACROAREA_SIDE
-local macroAreasPerChunkSide = variables.MACROAREAS_PER_CHUNKSIDE
-local chunkStudSpan = cellSize * cellsPerChunkSide
-local heightScale = variables.HM_AMPLITUDE / variables.HM_SCALE
-
-
--- Gathers all the data needed to generate a Chunk
-function CS.SampleChunk()
-	
-end
-
+local cellsPerMacroAreaSide = vars.CELLS_PER_MACROAREA_SIDE
+local macroAreasPerChunkSide = vars.MACROAREAS_PER_CHUNKSIDE
+local worldChunkSide = vars.worldChunkSize
+local heightScale = vars.HM_AMPLITUDE / vars.HM_SCALE
 
 --[[
 	Calculates all the height and biome data for each position inside of the
@@ -39,14 +24,14 @@ end
 ]]--
 function CS.SampleChunkTerrain(ChunkPosition: types.Position2D, TerrainOffset: {[string] : {x: number, z: number}})
 
-	local batchSize = variables.T_SAMPLE_BATCH_SIZE
+	local batchSize = vars.T_SAMPLE_BATCH_SIZE
 	local processed = 0
 
 	local TerrainMap: {[number]: types.TerrainSample} = {}
 	local AreaFrequencyMap: {[number]: types.BiomeFrequencyContainer} = {}
 
-	local chunkBaseX = ChunkPosition.x * chunkStudSpan
-	local chunkBaseZ = ChunkPosition.z * chunkStudSpan
+	local chunkBaseX = ChunkPosition.x * worldChunkSide
+	local chunkBaseZ = ChunkPosition.z * worldChunkSide
 
 	for x = 0, cellsPerChunkSide - 1 do
 		local worldX = chunkBaseX + (cellSize * x)
@@ -120,7 +105,7 @@ end
 
 function CS.SampleChunkEnvironment(AreaFrequencyMap: {[number]: types.BiomeFrequencyContainer}, EnvironmentOffset: {[string] : types.Position2D}) 
 
-	local batchSize = variables.E_SAMPLE_BATCH_SIZE
+	local batchSize = vars.E_SAMPLE_BATCH_SIZE
 	local processed = 0
 
 	local EnvironmentMap: {[number]: types.EnvironmentSample} = {}
@@ -157,7 +142,7 @@ function CS.SampleChunkEnvironment(AreaFrequencyMap: {[number]: types.BiomeFrequ
 			z = areaZ + EnvironmentOffset.ResourceMap.z
 		}
 
-		local noise = ((math.noise(OffsetChunk.x, OffsetChunk.z) + 1) / 2) / variables.RM_SCALE * variables.RM_AMPLITUDE
+		local noise = ((math.noise(OffsetChunk.x, OffsetChunk.z) + 1) / 2) / vars.RM_SCALE * vars.RM_AMPLITUDE
 
 		local mapKey = key
 
@@ -194,8 +179,6 @@ function CS.SampleChunkEnvironment(AreaFrequencyMap: {[number]: types.BiomeFrequ
 
 	return EnvironmentMap
 end
-
-
 
 
 return CS

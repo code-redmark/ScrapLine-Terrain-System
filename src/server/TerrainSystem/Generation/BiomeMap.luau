@@ -5,7 +5,7 @@ local types = require(game.ServerScriptService.Server.TerrainSystem.Data.Generat
 local Noise = require(game.ServerScriptService.Server.TerrainSystem.Generation.MyNoise2D)
 local BiomeList = require(game.ServerScriptService.Server.TerrainSystem.Data.BiomeList)
 
-local chunkWorldSpan = sharedVars.CELL_SIZE * sharedVars.CELLS_PER_CHUNKSIDE
+local worldChunkSize = sharedVars.CELL_SIZE * sharedVars.CELLS_PER_CHUNKSIDE
 local bmOctaves = variables.BM_OCTAVES
 local bmPersistence = variables.BM_PERSISTENCE
 local bmLacunarity = variables.BM_LACUNARITY
@@ -19,7 +19,7 @@ function module.getPosLevel(worldX: number, worldZ: number): types.BiomeLevel
 
 	for _, level in ipairs(BiomeList) do
 		-- World pos is distance from origin, for every level calculate distance from origin and check if its bigger than worldpos
-		distance += level.Radius * chunkWorldSpan
+		distance += level.Radius * worldChunkSize
 		if math.abs(worldX) < distance and math.abs(worldZ) < distance then
 			posLevel = level
 		end
@@ -40,7 +40,8 @@ function module.GetBiome(worldX: number, worldZ: number, BmOffset: types.Positio
 		local normalized = (noise + 1) * 15
 
 		local biomes = level.Biomes
-		local lo, hi = 1, #biomes
+		local lo = 1
+		local hi = #biomes 
 		local found = biomes[1]
 
 		while lo <= hi do

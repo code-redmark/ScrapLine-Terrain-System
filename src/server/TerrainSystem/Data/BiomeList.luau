@@ -1,9 +1,8 @@
-local SS = game:GetService("ServerStorage")
-
 local types = require(game.ServerScriptService.Server.TerrainSystem.Data.GenerationTypes)
 local ResourceData = require(script.Parent.ResourceData)
 
 local List: {types.BiomeLevel} = {}
+
 
 	List[1] = {
 		MinLevel = 0,
